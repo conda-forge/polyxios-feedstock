@@ -1,6 +1,6 @@
 context:
   name: polyxios
-  version: "0.3.0"
+  version: "0.4.1"
 
 package:
   name: ${{ name|lower }}
@@ -8,10 +8,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
-  sha256: b62b555be81e92a2724dfe5e979f0f10fb9b0af7d6907bd91bc47eb814e827bf
+  sha256: c5d3b3d240b8169230e5f3ef61a7578082a131c8836a456314823258e2eb3865
 
 build:
-  number: 1
+  number: 0
   skip:
     - match(python, "<3.11")
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
