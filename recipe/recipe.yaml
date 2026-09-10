@@ -51,7 +51,14 @@ tests:
   - script:
       # Tests marked "real"/"3dgs"/"high_order_mesh" download fixture files
       # from the network, so they are deselected here.
-      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh"
+      #
+      # unsearchable_directory asserts that a directory the process cannot
+      # search is reported as a permission error rather than a missing file.
+      # Python 3.14 made Path.exists() answer False there instead of raising,
+      # so the check the test relies on is gone. Fixed upstream for 0.4.2;
+      # drop this deselection with that version bump.
+      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh
+        and not unsearchable_directory"
     requirements:
       run:
         - pytest
