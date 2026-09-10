@@ -1,6 +1,6 @@
 context:
   name: polyxios
-  version: "0.3.0"
+  version: "0.4.1"
 
 package:
   name: ${{ name|lower }}
@@ -8,10 +8,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
-  sha256: b62b555be81e92a2724dfe5e979f0f10fb9b0af7d6907bd91bc47eb814e827bf
+  sha256: c5d3b3d240b8169230e5f3ef61a7578082a131c8836a456314823258e2eb3865
 
 build:
-  number: 1
+  number: 0
   skip:
     - match(python, "<3.11")
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -51,7 +51,14 @@ tests:
   - script:
       # Tests marked "real"/"3dgs"/"high_order_mesh" download fixture files
       # from the network, so they are deselected here.
-      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh"
+      #
+      # unsearchable_directory asserts that a directory the process cannot
+      # search is reported as a permission error rather than a missing file.
+      # Python 3.14 made Path.exists() answer False there instead of raising,
+      # so the check the test relies on is gone. Fixed upstream for 0.4.2;
+      # drop this deselection with that version bump.
+      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh
+        and not unsearchable_directory"
     requirements:
       run:
         - pytest
