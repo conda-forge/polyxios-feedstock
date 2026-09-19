@@ -11,7 +11,7 @@ source:
   sha256: c5d3b3d240b8169230e5f3ef61a7578082a131c8836a456314823258e2eb3865
 
 build:
-  number: 0
+  number: 1
   skip:
     - match(python, "<3.11")
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -57,8 +57,7 @@ tests:
       # Python 3.14 made Path.exists() answer False there instead of raising,
       # so the check the test relies on is gone. Fixed upstream for 0.4.2;
       # drop this deselection with that version bump.
-      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh
-        and not unsearchable_directory"
+      - pytest tests -v -k "not real and not 3dgs and not high_order_mesh and not unsearchable_directory"
     requirements:
       run:
         - pytest
