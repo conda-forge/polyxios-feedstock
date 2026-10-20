@@ -11,10 +11,13 @@ source:
   sha256: bdd3b165b9dcab4e15ac6f2c6d71396970a1bcaa1e6b9122668efce2b303d4a0
 
 build:
-  number: 0
+  number: 1
   skip:
     - match(python, "<3.12")
-  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script:
+    - if: unix
+      then: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation -Csetup-args=${MESON_ARGS// / -Csetup-args=}
+      else: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
